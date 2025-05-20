@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useRef } from "react";
 import { ElementType, WebsiteElement } from "@/types/elements";
 import { Rnd } from "react-rnd";
@@ -21,6 +20,7 @@ export const CanvasElement = ({
 }: CanvasElementProps) => {
   const [isEditing, setIsEditing] = useState(false);
   const editableRef = useRef<HTMLDivElement>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Enable editing mode automatically when element is selected and is a text-based element
   useEffect(() => {
@@ -73,7 +73,11 @@ export const CanvasElement = ({
   };
 
   const handleDoubleClick = () => {
-    if (element.type !== ElementType.Image && element.type !== ElementType.Audio) {
+    if (element.type === ElementType.Image || element.type === ElementType.Audio) {
+      if (fileInputRef.current) {
+        fileInputRef.current.click();
+      }
+    } else {
       setIsEditing(true);
       setTimeout(() => {
         if (editableRef.current) {
@@ -90,6 +94,32 @@ export const CanvasElement = ({
     }
     if (e.key === 'Delete' && isSelected && !isEditing) {
       onDelete();
+    }
+  };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const fileDataUrl = event.target?.result as string;
+      onUpdate({
+        ...element,
+        content: fileDataUrl
+      });
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const getFileAcceptType = () => {
+    switch (element.type) {
+      case ElementType.Image:
+        return "image/*";
+      case ElementType.Audio:
+        return "audio/*";
+      default:
+        return "";
     }
   };
 
@@ -141,15 +171,30 @@ export const CanvasElement = ({
         
       case ElementType.Image:
         return (
-          <img
-            src={element.content}
-            alt="Website element"
-            className="w-full h-full object-cover"
-            style={style}
-            onError={(e) => {
-              (e.target as HTMLImageElement).src = "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?w=600&auto=format";
-            }}
-          />
+          <>
+            <img
+              src={element.content}
+              alt="Website element"
+              className="w-full h-full object-cover"
+              style={style}
+              onError={(e) => {
+                (e.target as HTMLImageElement).src = "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?w=600&auto=format";
+              }}
+            />
+            <input
+              type="file"
+              ref={fileInputRef}
+              onChange={handleFileChange}
+              accept="image/*"
+              className="hidden"
+            />
+            {isSelected && (
+              <div className="absolute bottom-2 right-2 bg-blue-500 text-white text-xs p-1 rounded cursor-pointer"
+                onClick={() => fileInputRef.current?.click()}>
+                Change Image
+              </div>
+            )}
+          </>
         );
         
       case ElementType.List:
@@ -224,14 +269,29 @@ export const CanvasElement = ({
         
       case ElementType.Audio:
         return (
-          <audio
-            controls
-            className="w-full h-full"
-            style={style}
-          >
-            <source src={element.content} type="audio/mp3" />
-            Your browser does not support the audio element.
-          </audio>
+          <>
+            <audio
+              controls
+              className="w-full h-full"
+              style={style}
+            >
+              <source src={element.content} type="audio/mp3" />
+              Your browser does not support the audio element.
+            </audio>
+            <input
+              type="file"
+              ref={fileInputRef}
+              onChange={handleFileChange}
+              accept="audio/*"
+              className="hidden"
+            />
+            {isSelected && (
+              <div className="absolute bottom-2 right-2 bg-blue-500 text-white text-xs p-1 rounded cursor-pointer"
+                onClick={() => fileInputRef.current?.click()}>
+                Change Audio
+              </div>
+            )}
+          </>
         );
         
       default:
@@ -271,7 +331,6 @@ export const CanvasElement = ({
           {element.type}
         </div>
       )}
-
       {!isSelected && (
         <div className="absolute inset-0 cursor-move hover:bg-blue-100/20" onClick={onSelect}></div>
       )}

@@ -1,4 +1,3 @@
-
 import React, { useRef } from "react";
 import { ElementType, WebsiteElement } from "@/types/elements";
 import { CanvasElement } from "./CanvasElement";
@@ -33,16 +32,16 @@ export const Canvas = ({
   const handleDrop = (e: React.DragEvent) => {
     e.preventDefault();
     const elementType = e.dataTransfer.getData("element") as ElementType;
-    
+
     if (elementType && canvasRef.current) {
       const canvasBounds = canvasRef.current.getBoundingClientRect();
       const x = e.clientX - canvasBounds.left;
       const y = e.clientY - canvasBounds.top;
-      
+
       // Define default sizes based on element type
       let defaultWidth = 200;
-      let defaultHeight: string | number = 'auto';
-      
+      let defaultHeight: string | number = "auto";
+
       switch (elementType) {
         case ElementType.Heading:
           defaultWidth = 300;
@@ -71,7 +70,7 @@ export const Canvas = ({
           defaultWidth = 300;
           break;
       }
-      
+
       // Create a new element at drop position
       const newElement: WebsiteElement = {
         id: `element-${Date.now()}`,
@@ -81,7 +80,7 @@ export const Canvas = ({
         content: getDefaultContent(elementType),
         style: getDefaultStyle(elementType),
       };
-      
+
       // Add the new element and automatically select it
       onElementUpdate(newElement);
       onElementSelect(newElement);
@@ -90,7 +89,7 @@ export const Canvas = ({
 
   return (
     <div className="flex-1 relative overflow-auto bg-gray-100">
-      <div 
+      <div
         ref={canvasRef}
         className="w-full h-full min-h-[calc(100vh-4rem)] relative p-4"
         onClick={handleCanvasClick}
@@ -140,34 +139,34 @@ function getDefaultContent(type: ElementType): string {
 function getDefaultStyle(type: ElementType): Record<string, string> {
   switch (type) {
     case ElementType.Heading:
-      return { 
-        fontSize: "2rem", 
+      return {
+        fontSize: "2rem",
         fontWeight: "bold",
         color: "#333333",
         padding: "10px",
-        backgroundColor: "transparent"
+        backgroundColor: "transparent",
       };
     case ElementType.Subtitle:
-      return { 
-        fontSize: "1.5rem", 
+      return {
+        fontSize: "1.5rem",
         fontWeight: "600",
         color: "#555555",
         padding: "8px",
-        backgroundColor: "transparent" 
+        backgroundColor: "transparent",
       };
     case ElementType.Paragraph:
-      return { 
+      return {
         fontSize: "1rem",
         lineHeight: "1.5",
         color: "#666666",
         padding: "10px",
-        backgroundColor: "transparent"
+        backgroundColor: "transparent",
       };
     case ElementType.Image:
       return {
         border: "1px solid #eaeaea",
         borderRadius: "4px",
-        padding: "4px"
+        padding: "4px",
       };
     case ElementType.List:
       return {
@@ -175,13 +174,13 @@ function getDefaultStyle(type: ElementType): Record<string, string> {
         lineHeight: "1.6",
         color: "#666666",
         padding: "10px",
-        backgroundColor: "transparent"
+        backgroundColor: "transparent",
       };
     case ElementType.Table:
       return {
         border: "1px solid #eaeaea",
         padding: "0",
-        backgroundColor: "#ffffff"
+        backgroundColor: "#ffffff",
       };
     case ElementType.Navbar:
       return {
@@ -190,14 +189,14 @@ function getDefaultStyle(type: ElementType): Record<string, string> {
         textAlign: "center",
         width: "100%",
         borderRadius: "4px",
-        boxShadow: "0 1px 3px rgba(0,0,0,0.1)"
+        boxShadow: "0 1px 3px rgba(0,0,0,0.1)",
       };
     case ElementType.Audio:
       return {
         border: "1px solid #eaeaea",
         borderRadius: "4px",
         padding: "10px",
-        backgroundColor: "#f9f9f9"
+        backgroundColor: "#f9f9f9",
       };
     default:
       return {};
