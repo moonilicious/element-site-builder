@@ -22,11 +22,29 @@ export const CanvasElement = ({
   const [isEditing, setIsEditing] = useState(false);
   const editableRef = useRef<HTMLDivElement>(null);
 
+  // Enable editing mode automatically when element is selected and is a text-based element
   useEffect(() => {
-    if (!isSelected) {
+    const isTextElement = [
+      ElementType.Heading, 
+      ElementType.Paragraph, 
+      ElementType.Subtitle,
+      ElementType.List
+    ].includes(element.type);
+    
+    if (isSelected && isTextElement) {
+      // Short delay to ensure element is properly selected before editing
+      const timer = setTimeout(() => {
+        setIsEditing(true);
+        if (editableRef.current) {
+          editableRef.current.focus();
+        }
+      }, 100);
+      
+      return () => clearTimeout(timer);
+    } else if (!isSelected) {
       setIsEditing(false);
     }
-  }, [isSelected]);
+  }, [isSelected, element.type]);
 
   const handleResizeStop = (e: any, direction: any, ref: HTMLElement, delta: any) => {
     onUpdate({
@@ -55,7 +73,7 @@ export const CanvasElement = ({
   };
 
   const handleDoubleClick = () => {
-    if (element.type !== ElementType.Image) {
+    if (element.type !== ElementType.Image && element.type !== ElementType.Audio) {
       setIsEditing(true);
       setTimeout(() => {
         if (editableRef.current) {

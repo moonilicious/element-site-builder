@@ -49,6 +49,7 @@ export const Canvas = ({
         style: getDefaultStyle(elementType),
       };
       
+      // Add the new element and automatically select it
       onElementUpdate(newElement);
       onElementSelect(newElement);
     }
