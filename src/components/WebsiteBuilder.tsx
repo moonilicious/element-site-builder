@@ -3,6 +3,7 @@ import { useState } from "react";
 import { ElementPanel } from "./ElementPanel";
 import { Canvas } from "./Canvas";
 import { EditorSettings } from "./EditorSettings";
+import { PreviewButton } from "./PreviewButton";
 import { ElementType, WebsiteElement } from "@/types/elements";
 
 export const WebsiteBuilder = () => {
@@ -44,20 +45,25 @@ export const WebsiteBuilder = () => {
   };
 
   return (
-    <div className="flex flex-1 overflow-hidden">
-      <ElementPanel onAddElement={handleAddElement} />
-      <Canvas
-        elements={elements}
-        selectedElement={selectedElement}
-        onElementUpdate={handleElementUpdate}
-        onElementSelect={handleElementSelect}
-        onElementDelete={handleElementDelete}
-      />
-      <EditorSettings 
-        selectedElement={selectedElement} 
-        onElementUpdate={handleElementUpdate} 
-        onElementDelete={handleElementDelete}
-      />
+    <div className="flex flex-col h-full">
+      <div className="flex justify-end items-center p-2 border-b">
+        <PreviewButton elements={elements} />
+      </div>
+      <div className="flex flex-1 overflow-hidden">
+        <ElementPanel onAddElement={handleAddElement} />
+        <Canvas
+          elements={elements}
+          selectedElement={selectedElement}
+          onElementUpdate={handleElementUpdate}
+          onElementSelect={handleElementSelect}
+          onElementDelete={handleElementDelete}
+        />
+        <EditorSettings 
+          selectedElement={selectedElement} 
+          onElementUpdate={handleElementUpdate} 
+          onElementDelete={handleElementDelete}
+        />
+      </div>
     </div>
   );
 };
