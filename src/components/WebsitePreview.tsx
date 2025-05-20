@@ -1,5 +1,5 @@
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, CSSProperties } from "react";
 import { WebsiteElement } from "@/types/elements";
 import { ElementType } from "@/types/elements";
 
@@ -18,9 +18,9 @@ export const WebsitePreview = () => {
   const sortedElements = [...elements].sort((a, b) => a.position.y - b.position.y);
 
   const renderElementContent = (element: WebsiteElement) => {
-    const style = { 
-      ...element.style,
-      position: "absolute",
+    const style: CSSProperties = { 
+      ...element.style as CSSProperties,
+      position: "absolute" as "absolute",  // Use "absolute" as a const to satisfy TypeScript
       left: `${element.position.x}px`,
       top: `${element.position.y}px`,
       width: element.size.width,
