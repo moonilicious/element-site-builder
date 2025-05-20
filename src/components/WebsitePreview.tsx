@@ -20,7 +20,7 @@ export const WebsitePreview = () => {
   const renderElementContent = (element: WebsiteElement) => {
     const style: CSSProperties = { 
       ...element.style as CSSProperties,
-      position: "absolute" as "absolute",  // Use "absolute" as a const to satisfy TypeScript
+      position: "absolute",
       left: `${element.position.x}px`,
       top: `${element.position.y}px`,
       width: element.size.width,
