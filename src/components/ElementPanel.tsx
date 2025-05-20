@@ -1,14 +1,14 @@
 
 import { Button } from "@/components/ui/button";
 import { 
-  Heading, 
-  Paragraph, 
-  Image, 
-  List, 
-  Table, 
-  Layers, 
+  Heading1, 
+  Text, 
+  ImageIcon, 
+  ListOrdered, 
+  Table as TableIcon, 
+  Layers,
   BookText,
-  BookAudio
+  AudioLines
 } from "lucide-react";
 import { ElementType } from "@/types/elements";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -20,14 +20,14 @@ interface ElementPanelProps {
 
 export const ElementPanel = ({ onAddElement }: ElementPanelProps) => {
   const elements = [
-    { type: ElementType.Heading, icon: Heading, label: "Heading" },
+    { type: ElementType.Heading, icon: Heading1, label: "Heading" },
     { type: ElementType.Subtitle, icon: BookText, label: "Subtitle" },
-    { type: ElementType.Paragraph, icon: Paragraph, label: "Paragraph" },
-    { type: ElementType.Image, icon: Image, label: "Image" },
-    { type: ElementType.List, icon: List, label: "List" },
-    { type: ElementType.Table, icon: Table, label: "Table" },
+    { type: ElementType.Paragraph, icon: Text, label: "Paragraph" },
+    { type: ElementType.Image, icon: ImageIcon, label: "Image" },
+    { type: ElementType.List, icon: ListOrdered, label: "List" },
+    { type: ElementType.Table, icon: TableIcon, label: "Table" },
     { type: ElementType.Navbar, icon: Layers, label: "Navbar" },
-    { type: ElementType.Audio, icon: BookAudio, label: "Audio" },
+    { type: ElementType.Audio, icon: AudioLines, label: "Audio" },
   ];
 
   return (
