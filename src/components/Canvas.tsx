@@ -39,12 +39,45 @@ export const Canvas = ({
       const x = e.clientX - canvasBounds.left;
       const y = e.clientY - canvasBounds.top;
       
+      // Define default sizes based on element type
+      let defaultWidth = 200;
+      let defaultHeight: string | number = 'auto';
+      
+      switch (elementType) {
+        case ElementType.Heading:
+          defaultWidth = 300;
+          break;
+        case ElementType.Subtitle:
+          defaultWidth = 250;
+          break;
+        case ElementType.Paragraph:
+          defaultWidth = 400;
+          break;
+        case ElementType.Image:
+          defaultWidth = 300;
+          defaultHeight = 200;
+          break;
+        case ElementType.List:
+          defaultWidth = 250;
+          break;
+        case ElementType.Table:
+          defaultWidth = 400;
+          defaultHeight = 200;
+          break;
+        case ElementType.Navbar:
+          defaultWidth = 600;
+          break;
+        case ElementType.Audio:
+          defaultWidth = 300;
+          break;
+      }
+      
       // Create a new element at drop position
       const newElement: WebsiteElement = {
         id: `element-${Date.now()}`,
         type: elementType,
         position: { x, y },
-        size: { width: 200, height: elementType === ElementType.Image ? 150 : 'auto' },
+        size: { width: defaultWidth, height: defaultHeight },
         content: getDefaultContent(elementType),
         style: getDefaultStyle(elementType),
       };
@@ -88,7 +121,7 @@ function getDefaultContent(type: ElementType): string {
     case ElementType.Paragraph:
       return "Add your paragraph text here. Click to edit.";
     case ElementType.Image:
-      return "https://placehold.co/600x400";
+      return "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?w=600&auto=format";
     case ElementType.Subtitle:
       return "Add Your Subtitle";
     case ElementType.List:
@@ -110,31 +143,61 @@ function getDefaultStyle(type: ElementType): Record<string, string> {
       return { 
         fontSize: "2rem", 
         fontWeight: "bold",
-        color: "#333333" 
+        color: "#333333",
+        padding: "10px",
+        backgroundColor: "transparent"
       };
     case ElementType.Subtitle:
       return { 
         fontSize: "1.5rem", 
         fontWeight: "600",
-        color: "#555555" 
+        color: "#555555",
+        padding: "8px",
+        backgroundColor: "transparent" 
       };
     case ElementType.Paragraph:
       return { 
         fontSize: "1rem",
         lineHeight: "1.5",
-        color: "#666666"
+        color: "#666666",
+        padding: "10px",
+        backgroundColor: "transparent"
       };
     case ElementType.Image:
       return {
-        border: "none",
-        borderRadius: "0"
+        border: "1px solid #eaeaea",
+        borderRadius: "4px",
+        padding: "4px"
+      };
+    case ElementType.List:
+      return {
+        fontSize: "1rem",
+        lineHeight: "1.6",
+        color: "#666666",
+        padding: "10px",
+        backgroundColor: "transparent"
+      };
+    case ElementType.Table:
+      return {
+        border: "1px solid #eaeaea",
+        padding: "0",
+        backgroundColor: "#ffffff"
       };
     case ElementType.Navbar:
       return {
         backgroundColor: "#f8f9fa",
         padding: "15px",
         textAlign: "center",
-        width: "100%"
+        width: "100%",
+        borderRadius: "4px",
+        boxShadow: "0 1px 3px rgba(0,0,0,0.1)"
+      };
+    case ElementType.Audio:
+      return {
+        border: "1px solid #eaeaea",
+        borderRadius: "4px",
+        padding: "10px",
+        backgroundColor: "#f9f9f9"
       };
     default:
       return {};

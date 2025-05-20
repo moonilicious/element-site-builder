@@ -105,7 +105,7 @@ export const CanvasElement = ({
             onBlur={handleContentChange}
             suppressContentEditableWarning={true}
             style={style}
-            className="outline-none w-full h-full"
+            className="outline-none w-full h-full m-0"
           >
             {element.content}
           </h1>
@@ -119,7 +119,7 @@ export const CanvasElement = ({
             onBlur={handleContentChange}
             suppressContentEditableWarning={true}
             style={style}
-            className="outline-none w-full h-full"
+            className="outline-none w-full h-full m-0"
           >
             {element.content}
           </h2>
@@ -133,7 +133,7 @@ export const CanvasElement = ({
             onBlur={handleContentChange}
             suppressContentEditableWarning={true}
             style={style}
-            className="outline-none w-full h-full"
+            className="outline-none w-full h-full m-0"
           >
             {element.content}
           </p>
@@ -146,6 +146,9 @@ export const CanvasElement = ({
             alt="Website element"
             className="w-full h-full object-cover"
             style={style}
+            onError={(e) => {
+              (e.target as HTMLImageElement).src = "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?w=600&auto=format";
+            }}
           />
         );
         
@@ -159,7 +162,7 @@ export const CanvasElement = ({
             style={style}
             className="outline-none w-full h-full"
           >
-            <ul>
+            <ul className="pl-5 m-0">
               {element.content.split('\n').map((item, index) => (
                 <li key={index}>{item}</li>
               ))}
@@ -209,7 +212,7 @@ export const CanvasElement = ({
             style={style}
             className="w-full flex items-center justify-center"
           >
-            <ul className="flex space-x-4">
+            <ul className="flex space-x-4 p-0 m-0 list-none">
               {links.map((link, index) => (
                 <li key={index} className="hover:text-blue-600 cursor-pointer">
                   {link}
@@ -254,7 +257,7 @@ export const CanvasElement = ({
       enableResizing={isSelected}
       disableDragging={isEditing}
       className={cn(
-        "relative",
+        "relative bg-transparent",
         isSelected && "outline outline-2 outline-blue-500"
       )}
       bounds="parent"
@@ -267,6 +270,10 @@ export const CanvasElement = ({
         <div className="absolute -top-6 right-0 bg-blue-500 text-white text-xs py-1 px-2 rounded-t flex items-center">
           {element.type}
         </div>
+      )}
+
+      {!isSelected && (
+        <div className="absolute inset-0 cursor-move hover:bg-blue-100/20" onClick={onSelect}></div>
       )}
     </Rnd>
   );
